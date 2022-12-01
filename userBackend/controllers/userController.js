@@ -7,8 +7,6 @@ function createToken(id) {
 module.exports = {
 	userLogin: async (req, res) => {
 		const { email, password } = req.body;
-
-		console.log('asdasda');
 		try {
 			var user = new User();
 			user = await user.login(email, password);

@@ -31,7 +31,7 @@ const Signup = () => {
 			email: Yup.string()
 				.required('Email required!')
 				.min(6, 'Email too short!')
-				.max(28, 'Email too long!')
+				.max(50, 'Email too long!')
 				.email('Email must be valid email'),
 			password: Yup.string()
 				.required('Password required!')
