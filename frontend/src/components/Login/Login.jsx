@@ -9,6 +9,7 @@ import {
 	InputGroup,
 	InputRightElement,
 	Heading,
+	useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useFormik } from 'formik';
@@ -20,7 +21,8 @@ const Login = () => {
 	const [show, setShow] = useState(false);
 	const handleClick = () => setShow(!show);
 	const navigate = useNavigate();
-	const { login, yukleniyor, hata } = useLogin();
+	const { login } = useLogin();
+	  const toast = useToast();
 
 	const formik = useFormik({
 		initialValues: { email: '', password: '' },
@@ -37,11 +39,18 @@ const Login = () => {
 		}),
 		onSubmit: async (values, actions) => {
 			const vals = { ...values };
+			const { hata } = await login(values);
 
-			await login(values);
 
 			if (hata) {
-				alert(hata);
+				toast({
+        title: hata,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+				//alert(hata);
 			}
 
 			actions.resetForm();

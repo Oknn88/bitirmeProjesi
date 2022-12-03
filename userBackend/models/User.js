@@ -50,32 +50,35 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.prototype.signUp = async function (email, password) {
-    if (!email || !password) {
-      throw Error("Alanlar bos gecilemez");
+    try {
+      if (!email || !password) {
+        throw Error("Alanlar bos gecilemez");
+      }
+
+      if (!validator.isEmail(email)) {
+        throw Error("Email kurallara uygun degil");
+      }
+
+      if (!validator.isStrongPassword(password)) {
+        throw Error("Parola yeterince guclu degil");
+      }
+
+      const kontrolKullanici = await User.findOne({
+        where: { email },
+      });
+
+      if (kontrolKullanici) {
+        throw Error("Email zaten kullaniliyor");
+      }
+
+      const user = await User.create({ email, password });
+      return user;
+    } catch (error) {
+      console.log(error);
     }
-
-    if (!validator.isEmail(email)) {
-      throw Error("Email kurallara uygun degil");
-    }
-
-    if (!validator.isStrongPassword(password)) {
-      throw Error("Parola yeterince guclu degil");
-    }
-
-    const kontrolKullanici = await User.findOne({
-      where: { email },
-    });
-
-    if (kontrolKullanici) {
-      throw Error("Email zaten kullaniliyor");
-    }
-
-    const user = await User.create({ email, password });
-
-    return user;
   };
+
   User.prototype.login = async (email, password) => {
-    console.log(email, password);
     if (!email || !password) {
       throw Error("Alanlar bos gecilemez");
     }
@@ -95,15 +98,7 @@ module.exports = (sequelize, DataTypes) => {
     if (!parolaKontrol) {
       throw Error("Hatali parola girdiniz");
     }
-
     return user;
   };
-
-  // User.associate = (models) => {
-  // 	User.hasMany(models.Note, {
-  // 		onDelete: 'cascade',
-  // 		onUpdate: 'cascade',
-  // 	});
-  // };
   return User;
 };
