@@ -9,17 +9,21 @@ import {
 	InputGroup,
 	InputRightElement,
 	Heading,
+	useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { ArrowBackIcon } from '@chakra-ui/icons';
+import { useSignup } from '../../hooks/useSignup';
 
 const Signup = () => {
 	const [show, setShow] = useState(false);
 	const handleClick = () => setShow(!show);
 	const navigate = useNavigate();
+	const { signup } = useSignup();
+	const toast = useToast();
 
 	const formik = useFormik({
 		initialValues: { username: '', password: '', email: '', confirmPassword: '' },
@@ -43,29 +47,22 @@ const Signup = () => {
 				.max(28, 'Password too long!')
 				.oneOf([Yup.ref('password'), null], 'Passwords must match'),
 		}),
-		onSubmit: (values, actions) => {
-			const vals = { ...values };
-			fetch('http://localhost:3000/user/signup', {
-				method: 'POST',
-				credentials: 'include',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(vals),
-			})
-				.catch((err) => {
-					return;
-				})
-				.then((res) => {
-					if (!res || !res.ok || res.status >= 400) {
-						return;
-					}
-					return res.json();
-				})
-				.then((data) => {
-					if (!data) return;
-					navigate('/login');
+		onSubmit: async (values, actions) => {
+			const { hata } = await signup(values.email, values.password);
+
+			if (hata) {
+				toast({
+					title: hata,
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+					position: 'bottom',
 				});
+				return;
+			}
+
+			navigate('/login');
+
 			actions.resetForm();
 		},
 	});

@@ -22,7 +22,7 @@ const Login = () => {
 	const handleClick = () => setShow(!show);
 	const navigate = useNavigate();
 	const { login } = useLogin();
-	  const toast = useToast();
+	const toast = useToast();
 
 	const formik = useFormik({
 		initialValues: { email: '', password: '' },
@@ -38,19 +38,16 @@ const Login = () => {
 				.max(28, 'Password too long!'),
 		}),
 		onSubmit: async (values, actions) => {
-			const vals = { ...values };
 			const { hata } = await login(values);
-
 
 			if (hata) {
 				toast({
-        title: hata,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
-				//alert(hata);
+					title: hata,
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+					position: 'bottom',
+				});
 			}
 
 			actions.resetForm();

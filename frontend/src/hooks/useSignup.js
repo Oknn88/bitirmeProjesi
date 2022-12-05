@@ -1,36 +1,31 @@
-import { useState } from "react";
-import { useAuthContext } from "./useAuthContext";
+import { useAuthContext } from './useAuthContext';
 
 export const useSignup = () => {
-  const [hata, setHata] = useState();
+	const { dispatch } = useAuthContext();
 
-  const { dispatch } = useAuthContext();
+	const signup = async (email, password) => {
+		const response = await fetch('http://localhost:3000/user/signup', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				email,
+				password,
+			}),
+		});
+		const json = await response.json();
 
-  const signup = async (email, password) => {
-    setYukleniyor(true);
-    setHata(null);
+		console.log(json);
+		if (!response.ok) {
+			return { hata: json.hata };
+		}
 
-    const response = await fetch("http://localhost:3000/user/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
-    const json = await response.json();
+		if (response.ok) {
+			localStorage.setItem('kullanici', JSON.stringify(json));
+			dispatch({ type: 'LOGIN', payload: json });
+		}
+	};
 
-    if (!response.ok) {
-      setHata(json.hata);
-    }
-
-    if (response.ok) {
-      localStorage.setItem("kullanici", JSON.stringify(json));
-      dispatch({ type: "LOGIN", payload: json });
-    }
-  };
-
-  return { signup, hata };
+	return { signup };
 };
