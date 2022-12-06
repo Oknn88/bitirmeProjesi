@@ -27,15 +27,15 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import logo from '../imgs/logo.png';
 import { Link as LinkRouter } from 'react-router-dom';
 import { useLogout } from '../hooks/useLogout';
-import { BiLogOut } from "react-icons/bi";
+import { BiLogOut } from 'react-icons/bi';
 
 export default function WithSubnavigation() {
 	const { isOpen, onToggle } = useDisclosure();
 	const { kullanici } = useAuthContext();
-	const {logout} = useLogout();
+	const { logout } = useLogout();
 	const Logout = async () => {
 		await logout();
-	}
+	};
 	return (
 		<Box>
 			<Flex
@@ -79,9 +79,13 @@ export default function WithSubnavigation() {
 								/>
 							</MenuButton>
 							<MenuList>
-								<MenuItem as={Link} href="/profile">Profile</MenuItem>
+								<MenuItem as={Link} href='/profile'>
+									Profile
+								</MenuItem>
 								<MenuDivider />
-								<MenuItem icon={<BiLogOut />} as={Link} href="/" onClick={Logout}>Logout</MenuItem>
+								<MenuItem icon={<BiLogOut />} as={Link} href='/' onClick={Logout}>
+									Logout
+								</MenuItem>
 							</MenuList>
 						</Menu>
 					)}
@@ -259,5 +263,4 @@ const NAV_ITEMS: Array<NavItem> = [
 		label: 'Contact',
 		href: '/contact',
 	},
-	
 ];
