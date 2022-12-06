@@ -79,10 +79,9 @@ export default function WithSubnavigation() {
 								/>
 							</MenuButton>
 							<MenuList>
-								<MenuItem>Link 1</MenuItem>
-								<MenuItem>Link 2</MenuItem>
+								<MenuItem as={Link} href="/profile">Profile</MenuItem>
 								<MenuDivider />
-								<MenuItem icon={<BiLogOut />} as={Link} href="http://localhost:3001" onClick={Logout}>Logout</MenuItem>
+								<MenuItem icon={<BiLogOut />} as={Link} href="/" onClick={Logout}>Logout</MenuItem>
 							</MenuList>
 						</Menu>
 					)}
@@ -249,6 +248,10 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
 	{
+		label: 'Home',
+		href: '/',
+	},
+	{
 		label: 'About Us',
 		href: '/about-us',
 	},
@@ -256,4 +259,5 @@ const NAV_ITEMS: Array<NavItem> = [
 		label: 'Contact',
 		href: '/contact',
 	},
+	
 ];
