@@ -1,43 +1,52 @@
 import React from 'react';
 import {
-	SimpleGrid,
 	Text,
 	Button,
 	Stack,
 	ButtonGroup,
 	Input,
-	Textarea,
 	VStack,
 	FormControl,
 	FormLabel,
 	FormErrorMessage,
+	AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useDisclosure } from '@chakra-ui/react'
 
 const Profile = () => {
 
-    
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	  const cancelRef = React.useRef();
+	const changeEmailClick = () => {
+		onOpen();
+	}
+	const confirmChangeEmail = () => {
+		onClose();
+	}
+
 	const formik = useFormik({
-		initialValues: { firstName: '', lastName: '', country: '', subject: '', message: '' },
+		initialValues: { email: '', },
 		validationSchema: Yup.object({
-			firstName: Yup.string().required('Name required!').min(3, 'Name too short!').max(28, 'Name too long!'),
-			lastName: Yup.string()
-				.required('Surname required!')
-				.min(3, 'Surname too short!')
-				.max(28, 'Surname too long!'),
-			country: Yup.string().ensure().required('Country required!'),
-			subject: Yup.string()
-				.required('Subject required!')
-				.min(6, 'Subject too short!')
-				.max(30, 'Subject too long!'),
-			message: Yup.string()
-				.required('Message required!')
-				.min(6, 'Message too short!')
-				.max(150, 'Message too long!'),
+			email: Yup.string()
+				.required('Email required!')
+				.min(6, 'Email too short!')
+				.max(28, 'Email too long!')
+				.email('Email must be valid email'),
+				confirmEmail: Yup.string()
+				.required('Email required!')
+				.min(6, 'Email too short!')
+				.max(28, 'Email too long!')
+				.email('Email must be valid email'),
 		}),
 		onSubmit: async (values, actions) => {
-			console.log('Gonderildi');
+			console.log(values);
 			actions.resetForm();
 		},
 	});
@@ -45,7 +54,7 @@ const Profile = () => {
 
   return (
     <div>
-        <VStack w={{ base: '100%' }} m='auto' justify={'center'} spacing={'1rem'} pl={'1rem'} pr={'1rem'}>
+        <VStack w={{ base: '100%', md: '500px' }} m='auto' h='100vh' spacing={'1rem'}>
 				<Stack spacing={3} justifyContent={'center'} alignContent={'center'}>
 					<Text fontSize='5xl' as='b' textAlign={'center'}>
 						Profile
@@ -56,50 +65,52 @@ const Profile = () => {
 						Edit your profile:
 					</Text>
 				</Stack>
+				<FormControl isInvalid={formik.errors.email && formik.touched.email}>
+					<FormLabel fontSize={'lg'}>Email</FormLabel>
+					<Input name='email' type={'text'} {...formik.getFieldProps('email')}></Input>
+					<FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+				</FormControl>
 
-				<SimpleGrid spacing={20} columns={[1, null, 2]}>
-					<Stack>
-						<FormControl isInvalid={formik.errors.firstName && formik.touched.firstName}>
-							<FormLabel fontSize={'lg'}>First Name</FormLabel>
-							<Input name='firstName' type={'text'} {...formik.getFieldProps('firstName')}></Input>
-							<FormErrorMessage>{formik.errors.firstName}</FormErrorMessage>
-						</FormControl>
+				<FormControl isInvalid={formik.errors.confirmEmail && formik.touched.confirmEmail}>
+					<FormLabel fontSize={'lg'}>Confirm Email</FormLabel>
+					<Input name='confirmEmail' type={'text'} {...formik.getFieldProps('confirmEmail')}></Input>
+					<FormErrorMessage>{formik.errors.confirmEmail}</FormErrorMessage>
+				</FormControl>
 
-						<FormControl isInvalid={formik.errors.lastName && formik.touched.lastName}>
-							<FormLabel fontSize={'lg'}>Last Name</FormLabel>
-							<Input name='lastName' type={'text'} {...formik.getFieldProps('lastName')}></Input>
-							<FormErrorMessage>{formik.errors.lastName}</FormErrorMessage>
-						</FormControl>
+					
+							
 
-						<FormControl isInvalid={formik.errors.subject && formik.touched.subject}>
-							<FormLabel fontSize={'lg'}>Subject</FormLabel>
-							<Input
-								name='subject'
-								type={'text'}
-								placeholder={'Max 30 character'}
-								{...formik.getFieldProps('subject')}
-							></Input>
-							<FormErrorMessage>{formik.errors.subject}</FormErrorMessage>
-						</FormControl>
+				<ButtonGroup pt={'1rem'}>
+					<Button type='submit' colorScheme={'teal'} onClick={changeEmailClick}>
+						Change Email
+					</Button>
+					 <AlertDialog
+        				isOpen={isOpen}
+        				leastDestructiveRef={cancelRef}
+        				onClose={onClose}
+      				>
+        				<AlertDialogOverlay>
+          					<AlertDialogContent>
+           				 		<AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              						Change Email
+            					</AlertDialogHeader>
 
-						<FormControl isInvalid={formik.errors.message && formik.touched.message}>
-							<FormLabel fontSize={'lg'}>Message</FormLabel>
-							<Textarea
-								name='message'
-								type={'text'}
-								placeholder={'Max 150 character'}
-								{...formik.getFieldProps('message')}
-							></Textarea>
-							<FormErrorMessage>{formik.errors.message}</FormErrorMessage>
-						</FormControl>
+            					<AlertDialogBody>
+              						Are you sure? You can't undo this action afterwards.
+            					</AlertDialogBody>
 
-						<ButtonGroup pt={'1rem'}>
-							<Button type='submit' colorScheme={'teal'}>
-								Submit
-							</Button>
-						</ButtonGroup>
-					</Stack>
-				</SimpleGrid>
+            					<AlertDialogFooter>
+              						<Button ref={cancelRef} onClick={onClose}>
+                						Cancel
+              						</Button>
+              						<Button colorScheme='green' onClick={confirmChangeEmail} ml={3}>
+                						Change
+              						</Button>
+            					</AlertDialogFooter>
+          					</AlertDialogContent>
+        				</AlertDialogOverlay>
+      				</AlertDialog>
+				</ButtonGroup>
 			</VStack>
             </div>
   )
