@@ -44,7 +44,6 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   User.beforeCreate(async (user) => {
-    console.log(user);
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
   });
@@ -101,7 +100,6 @@ module.exports = (sequelize, DataTypes) => {
     if (!email || !confirmEmail) {
       throw Error("Please Fill All Fields ");
     }
-
     const user = await User.findOne({
       where: {
         email: lastEmail,
@@ -110,6 +108,27 @@ module.exports = (sequelize, DataTypes) => {
     if (user) {
       user.update({ email: email });
     }
+    return user;
+  };
+
+  User.prototype.changePassword = async (email, password, confirmPassword) => {
+    if (!password || !confirmPassword) {
+      throw Error("Please Fill All Fields ");
+    }
+    if (!validator.isStrongPassword(password)) {
+      throw Error("Password is Not Strong");
+    }
+    const user = await User.findOne({
+      where: {
+        email: email,
+      },
+    });
+    if (user) {
+      const sayi = await bcrypt.genSalt(10);
+      const cryptPassword = await bcrypt.hash(password, sayi);
+      user.update({ password: cryptPassword });
+    }
+    return user;
   };
 
   return User;

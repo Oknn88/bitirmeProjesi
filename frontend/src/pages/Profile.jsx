@@ -9,12 +9,25 @@ import {
 	FormControl,
 	FormLabel,
 	FormErrorMessage,
-	Tabs, TabList, TabPanels, Tab, TabPanel
+	Tabs, 
+	TabList, 
+	TabPanels, 
+	Tab, 
+	TabPanel,
+	useToast,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useChangeEmail } from '../hooks/useChangeEmail';
+import { useChangePassword } from '../hooks/useChangePassword';
 
 const Profile = () => {
+	const { kullanici } = useAuthContext();
+	const { changeEmail } = useChangeEmail();
+	const { changePassword } = useChangePassword();
+	const toast = useToast();
+
 	const formik = useFormik({
 		initialValues: { email: '', confirmEmail: ''},
 		validationSchema: Yup.object({
@@ -31,8 +44,17 @@ const Profile = () => {
 				.oneOf([Yup.ref('email'), null], 'Email must match')
 		}),
 		onSubmit: async (values, actions) => {
-			console.log("email change");
-			console.log(values);
+			const { hata } = await changeEmail(kullanici.email, values.email, values.confirmEmail);
+
+			if (hata) {
+				toast({
+					title: hata,
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+					position: 'bottom',
+				});
+			}
 			
 			actions.resetForm();
 		},
@@ -51,8 +73,18 @@ const Profile = () => {
 				.oneOf([Yup.ref('password'), null], 'Passwords must match'),
 		}),
 		onSubmit: async (values, actions) => {
-			console.log("password change");
-			console.log(values);
+			const { hata } = await changePassword(kullanici.email, values.password, values.confirmPassword);
+
+			if (hata) {
+				toast({
+					title: hata,
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+					position: 'bottom',
+				});
+			}
+			
 			actions.resetForm();
 		},
 	});
@@ -61,7 +93,7 @@ const Profile = () => {
   return (
     <div>
 
-		<Tabs orientation='vertical'>
+<Tabs orientation='vertical' size={'lg'} >
   <TabList>
     <Tab>Email Change</Tab>
     <Tab>Password Change</Tab>
