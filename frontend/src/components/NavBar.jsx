@@ -80,7 +80,7 @@ export default function WithSubnavigation() {
 							</MenuButton>
 							<MenuList>
 								<MenuItem as={Link} href='/profile'>
-									Profile
+									Settins
 								</MenuItem>
 								<MenuDivider />
 								<MenuItem icon={<BiLogOut />} as={Link} href='/' onClick={Logout}>
