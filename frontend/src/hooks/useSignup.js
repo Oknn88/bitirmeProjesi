@@ -1,8 +1,4 @@
-import { useAuthContext } from "./useAuthContext";
-
 export const useSignup = () => {
-  const { dispatch } = useAuthContext();
-
   const signup = async (email, password) => {
     const response = await fetch("http://localhost:3000/user/signup", {
       method: "POST",
@@ -21,8 +17,7 @@ export const useSignup = () => {
     }
 
     if (response.ok) {
-      localStorage.setItem("kullanici", JSON.stringify(json));
-      dispatch({ type: "LOGIN", payload: json });
+      return { okey: "okey" };
     }
   };
 

@@ -20,7 +20,37 @@ module.exports = {
       res.status(400).json({ hata: error.message });
     }
   },
+  userEmailVerification: async (req, res) => {
+    const { email, code: emailVerificationCode } = req.body;
+    console.log(email, emailVerificationCode);
+    try {
+      var user = new User();
+      user = await user.matchEmailVerificationCode(
+        email,
+        emailVerificationCode
+      );
 
+      if (user) {
+        res.status(200).json({});
+      }
+    } catch (error) {
+      res.status(400).json({ hata: error.message });
+    }
+  },
+  userEmailResend: async (req, res) => {
+    const { email } = req.body;
+
+    try {
+      var user = new User();
+      user = await user.resendVerificationEmail(email);
+
+      if (user) {
+        res.status(200).json({});
+      }
+    } catch (error) {
+      res.status(400).json({ hata: error.message });
+    }
+  },
   userSignup: async (req, res) => {
     const { email, password } = req.body;
 

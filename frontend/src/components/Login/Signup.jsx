@@ -49,7 +49,6 @@ const Signup = () => {
 		}),
 		onSubmit: async (values, actions) => {
 			const { hata } = await signup(values.email, values.password);
-
 			if (hata) {
 				toast({
 					title: hata,
@@ -61,7 +60,7 @@ const Signup = () => {
 				return;
 			}
 
-			navigate('/login');
+			navigate('/email-verification', {state:{email: values.email}});
 
 			actions.resetForm();
 		},

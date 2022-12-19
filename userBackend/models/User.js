@@ -2,6 +2,7 @@
 const { Model, where } = require("sequelize");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
+const axios = require("axios");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -36,6 +37,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: false,
       },
+      emailVerificationCode: {
+        type: DataTypes.INTEGER,
+      },
     },
     {
       sequelize,
@@ -68,8 +72,17 @@ module.exports = (sequelize, DataTypes) => {
     if (kontrolKullanici) {
       throw Error("Email is Already Taken");
     }
+    //emial verification code create
+    var emailVerificationCode = Math.floor(
+      Math.random() * (999999 - 1 + 1) + 1
+    );
+    //post to email service
+    await axios.post("http://localhost:4000", {
+      email,
+      emailVerificationCode,
+    });
+    const user = await User.create({ email, password, emailVerificationCode });
 
-    const user = await User.create({ email, password });
     return user;
   };
 
@@ -86,6 +99,9 @@ module.exports = (sequelize, DataTypes) => {
 
     if (!user) {
       throw Error("Email Not Found");
+    }
+    if (user.emailVerified != true) {
+      throw Error("Plase verify your email");
     }
 
     const parolaKontrol = bcrypt.compareSync(password, user.password);
@@ -129,6 +145,54 @@ module.exports = (sequelize, DataTypes) => {
       user.update({ password: cryptPassword });
     }
     return user;
+  };
+
+  User.prototype.matchEmailVerificationCode = async (
+    email,
+    emailVerificationCode
+  ) => {
+    if (!emailVerificationCode) {
+      throw Error("Please Fill All Fields ");
+    }
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
+    if (emailVerificationCode != user.emailVerificationCode) {
+      throw Error("Code doesn't match");
+    } else {
+      user.update({ emailVerified: true });
+    }
+    return user;
+  };
+  User.prototype.resendVerificationEmail = async (email) => {
+    try {
+      const user = await User.findOne({
+        where: {
+          email,
+        },
+      });
+      if (!user) {
+        throw Error("Email Not Found");
+      }
+
+      //emial verification code create
+      var emailVerificationCode = Math.floor(
+        Math.random() * (999999 - 1 + 1) + 1
+      );
+      //post to email service
+      await axios.post("http://localhost:4000", {
+        email,
+        emailVerificationCode,
+      });
+      if (user) {
+        user.update({ emailVerificationCode });
+      }
+      return user;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return User;
