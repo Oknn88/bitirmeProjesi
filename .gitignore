@@ -1,7 +1,6 @@
 userBackend/.env
-userBackend/package-lock.json
+
 userBackend/node_modules
 frontend/node_modules
-frontend/package-lock.json
+
 location-tracking/node_modules
-location-tracking/package-lock.json
