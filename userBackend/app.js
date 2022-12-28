@@ -5,7 +5,16 @@ require('dotenv').config();
 require('./db');
 const serve = require('./serve');
 
-app.use(cors());
+app.use(
+	cors({
+		origin: [
+			'http://167.172.162.68',
+			'http://167.172.162.68:3001',
+			'http://167.172.162.68:4000',
+			'http://localhost:3001',
+		],
+	})
+);
 app.use(express.json());
 app.use(serve);
 
