@@ -31,7 +31,7 @@
 		"yup": "^0.32.11"
 	},
 	"scripts": {
-		"start": "PORT=3001 react-dotenv && react-scripts start",
+		"start": "react-dotenv && PORT=3001 react-scripts start",
 		"build": "react-dotenv && react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"

@@ -11,7 +11,6 @@ import Contact from './pages/Contact';
 import Profile from './pages/Profile';
 import EmailVerification from './pages/EmailVerification';
 import ManuelEmailVerification from './pages/ManuelEmailVerification';
-import env from 'react-dotenv';
 
 function App() {
 	const { kullanici } = useAuthContext();

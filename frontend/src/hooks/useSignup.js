@@ -1,6 +1,8 @@
+import env from 'react-dotenv';
+
 export const useSignup = () => {
 	const signup = async (email, password) => {
-		const response = await fetch('http://{env.API_URL}/user/signup', {
+		const response = await fetch(`http://${env.API_URL}/user/signup`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
