@@ -7,14 +7,13 @@ const serve = require('./serve');
 
 app.use(
 	cors({
-		origin: [
-			'http://167.172.162.68',
-			'http://167.172.162.68:3001',
-			'http://167.172.162.68:4000',
-			'http://localhost:3001',
-		],
+		origin: '*',
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+		preflightContinue: false,
+		optionsSuccessStatus: 204,
 	})
 );
+
 app.use(express.json());
 app.use(serve);
 
