@@ -19,24 +19,31 @@ import './Styles/AboutUs.css';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import staticData from '../staticDatas';
+import { useContact } from '../hooks/useContact';
 
 const Contact = () => {
 	const countryListData = staticData.countries;
 
 	const countryList = [];
+	const { contact } = useContact();
 
 	countryListData.data.forEach((element) => {
 		countryList.push(element.name);
 	});
 
 	const formik = useFormik({
-		initialValues: { firstName: '', lastName: '', country: '', subject: '', message: '' },
+		initialValues: { firstName: '', lastName: '',  email: '', country: '', subject: '', message: '' },
 		validationSchema: Yup.object({
 			firstName: Yup.string().required('Name required!').min(3, 'Name too short!').max(28, 'Name too long!'),
 			lastName: Yup.string()
 				.required('Surname required!')
 				.min(3, 'Surname too short!')
 				.max(28, 'Surname too long!'),
+				email: Yup.string()
+				.required('Email required!')
+				.min(6, 'Email too short!')
+				.max(28, 'Email too long!')
+				.email('Email must be valid email'),
 			country: Yup.string().ensure().required('Country required!'),
 			subject: Yup.string()
 				.required('Subject required!')
@@ -48,14 +55,18 @@ const Contact = () => {
 				.max(150, 'Message too long!'),
 		}),
 		onSubmit: async (values, actions) => {
-			console.log('Gonderildi');
+			const { hata, okey } = await contact(values);
+
+			if(hata){
+				alert("Email cannot send");
+			}
 			actions.resetForm();
 		},
 	});
 
 	return (
 		<div>
-			<VStack w={{ base: '100%' }} m='auto' justify={'center'} spacing={'1rem'} pl={'1rem'} pr={'1rem'}>
+			<VStack as={'form'} w={{ base: '100%' }} m='auto' justify={'center'} spacing={'1rem'} pl={'1rem'} pr={'1rem'} onSubmit={formik.handleSubmit}>
 				<Stack spacing={3} justifyContent={'center'} alignContent={'center'}>
 					<Text fontSize='5xl' as='b' textAlign={'center'}>
 						Contact Us
@@ -70,7 +81,7 @@ const Contact = () => {
 				<SimpleGrid spacing={20} columns={[1, null, 2]}>
 					<Stack spacing={2} justifyContent={'center'} alignContent={'center'}>
 						<Image
-							src='https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80'
+							src='https://images.unsplash.com/photo-1619468129361-605ebea04b44?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80'
 							alt='Green double couch with wooden legs'
 							borderRadius='lg'
 							w={'600px'}
@@ -88,6 +99,13 @@ const Contact = () => {
 							<Input name='lastName' type={'text'} {...formik.getFieldProps('lastName')}></Input>
 							<FormErrorMessage>{formik.errors.lastName}</FormErrorMessage>
 						</FormControl>
+
+						<FormControl isInvalid={formik.errors.email && formik.touched.email}>
+							<FormLabel fontSize={'lg'}>Email</FormLabel>
+							<Input name='email' placeholder='Enter Email' size={'lg'} {...formik.getFieldProps('email')} />
+							<FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+						</FormControl>
+
 
 						<FormControl isInvalid={formik.errors.country && formik.touched.country}>
 							<FormLabel fontSize={'lg'}>Country</FormLabel>
@@ -124,13 +142,14 @@ const Contact = () => {
 							<FormErrorMessage>{formik.errors.message}</FormErrorMessage>
 						</FormControl>
 
-						<ButtonGroup pt={'1rem'}>
+						
+					</Stack>
+				</SimpleGrid>
+				<ButtonGroup pt={'1rem'}>
 							<Button type='submit' colorScheme={'teal'}>
 								Submit
 							</Button>
 						</ButtonGroup>
-					</Stack>
-				</SimpleGrid>
 			</VStack>
 		</div>
 	);
