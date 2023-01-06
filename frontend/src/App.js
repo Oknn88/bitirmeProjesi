@@ -11,7 +11,6 @@ import Contact from './pages/Contact';
 import Profile from './pages/Profile';
 import EmailVerification from './pages/EmailVerification';
 import ManuelEmailVerification from './pages/ManuelEmailVerification';
-import CurrentMap from './components/HomePage/CurrentMap';
 
 function App() {
 	const { kullanici } = useAuthContext();
@@ -28,7 +27,6 @@ function App() {
 					<Route path='/contact' element={<Contact />} />
 					<Route path='/email-verification' element={<EmailVerification />} />
 					<Route path='/manuel-email-verification' element={<ManuelEmailVerification />} />
-					<Route path='/map' element={<CurrentMap />} />
 				</Routes>
 			</div>
 		</div>

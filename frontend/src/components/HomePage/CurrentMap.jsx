@@ -1,50 +1,87 @@
-import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 import React from 'react';
-import mqtt from 'mqtt';
+import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
+
+import mqtt from 'mqtt/dist/mqtt';
 
 export class MapContainer extends React.Component {
+	state = {
+		lat: -34.397,
+		lng: 150.644,
+		altitude: 0,
+		speed: 0,
+		course: 0,
+	};
+
+	updateMap(message) {
+		var [lat, lng, altitude, speed, course] = message.toString().split(',');
+
+		this.setState({
+			lat,
+			lng,
+			altitude,
+			speed,
+			course,
+		});
+	}
+
 	componentDidMount() {
-		var client = mqtt.connect('ws://167.172.162.68:3000');
-		client.subscribe('LED');
+		var client = mqtt.connect('ws://167.172.162.68:5000');
+
+		client.subscribe('LOCATION');
+
 		client.on('connect', function () {
 			console.log('connected!');
 		});
-		client.on('message', function (topic, message) {
+
+		client.on('message', (topic, message) => {
 			console.log(topic, ' : ', message.toString());
 			switch (topic) {
 				case 'LOCATION':
-					//updateMap(message);
-					break;
-				default:
+					this.updateMap(message);
 					break;
 			}
 		});
 	}
 
 	render() {
+		const { lat, lng, altitude, speed, course } = this.state;
+		const containerStyle = {
+			position: 'relative',
+			width: '100%',
+			height: '100%',
+		};
 		return (
-			<div style={{ width: '100%', height: '800px' }}>
+			<div style={{ width: '100%', height: '100%' }}>
 				<Map
+					containerStyle={containerStyle}
 					google={this.props.google}
 					initialCenter={{
-						lat: 47.444,
-						lng: -122.176,
+						lat,
+						lng,
 					}}
-					zoom={12}
+					center={{
+						lat,
+						lng,
+					}}
+					zoom={18}
 				>
-					<Marker>
-						icon=
-						{{
+					<Marker
+						icon={{
 							path: window.google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
 							fillColor: 'red',
 							fillOpacity: 0.9,
 							strokeWeight: 6,
 							scale: 8,
-							rotation: 0,
+							rotation: parseFloat(course),
 						}}
-						, position={{ lat: 47.444, lng: -122.176 }}
-					</Marker>
+						position={{ lat, lng }}
+					/>
 				</Map>
+
+				<div id='info'>
+					<h2>{speed} km/h</h2>
+					<h2>{altitude} msl</h2>
+				</div>
 			</div>
 		);
 	}
