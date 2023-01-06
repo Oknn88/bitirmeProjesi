@@ -29,7 +29,29 @@ server.on('published', function (packet, client) {
 	//console.log('Published', packet.topic, packet.payload);
 
 	[flat, flon, alt, spd, crs, year, month, day, hour, minute, second] = packet.payload.toString().split(',');
-	console.log(flat + '-' + flon);
+	console.log(
+		flat +
+			'-' +
+			flon +
+			'-' +
+			alt +
+			'-' +
+			spd +
+			'-' +
+			crs +
+			'-' +
+			year +
+			'-' +
+			month +
+			'-' +
+			day +
+			'-' +
+			hour +
+			'-' +
+			minute +
+			'-' +
+			second
+	);
 });
 
 // fired when the mqtt server is ready
