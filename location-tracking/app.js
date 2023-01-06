@@ -16,7 +16,7 @@ var moscaSettings = {
 		factory: mosca.persistence.Redis,
 	},
 	http: {
-		port: 3000,
+		port: 4000,
 	},
 };
 
