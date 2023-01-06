@@ -7,7 +7,6 @@ var ascoltatore = {
 	port: 6379,
 	return_buffers: true, // to handle binary payloads
 	host: 'localhost',
-	password: 'Ugur12345.',
 };
 
 var moscaSettings = {
