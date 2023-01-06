@@ -15,6 +15,9 @@ var moscaSettings = {
 	persistence: {
 		factory: mosca.persistence.Redis,
 	},
+	http: {
+		port: 3000,
+	},
 };
 
 var server = new mosca.Server(moscaSettings);

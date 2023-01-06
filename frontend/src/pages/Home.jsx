@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Flex, Spacer } from '@chakra-ui/react';
-import Map from './../components/HomePage/Map';
+import HistoryMap from './../components/HomePage/HistoryMap';
 import DeviceMenu from '../components/HomePage/DeviceMenu';
 
 const Home = () => {
@@ -8,7 +8,7 @@ const Home = () => {
 		<div className='home'>
 			<Flex>
 				<Box flex={'1'}>
-					<Map />
+					<HistoryMap />
 				</Box>
 
 				<Box flex={'2'} position={'relative'}>
