@@ -27,7 +27,9 @@ server.on('clientConnected', function (client) {
 // fired when a message is received
 server.on('published', function (packet, client) {
 	//console.log('Published', packet.topic, packet.payload);
-	console.log(packet.payload.toString());
+
+	[flat, flon, alt, spd, crs, year, month, day, hour, minute, second] = packet.payload.toString();
+	console.log(flat + '-' + flon);
 });
 
 // fired when the mqtt server is ready
