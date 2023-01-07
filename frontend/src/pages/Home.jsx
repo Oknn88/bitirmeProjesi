@@ -8,7 +8,7 @@ const Home = () => {
 	return (
 		<div className='home'>
 			<Flex>
-				<Box flex={'1'} position={'relative'}>
+				<Box flex={'1'}>
 					<CurrentMap />
 				</Box>
 
