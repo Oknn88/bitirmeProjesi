@@ -17,7 +17,7 @@ var moscaSettings = {
 	port: 1883,
 
 	http: {
-		port: 5002,
+		port: 5000,
 	},
 };
 
