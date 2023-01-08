@@ -15,10 +15,13 @@ import { FaHistory } from 'react-icons/fa';
 import { AiFillDelete } from 'react-icons/ai';
 import { useState } from 'react';
 import { DayPicker } from 'react-day-picker';
+import axios from 'axios';
 
 const DeviceMenu = () => {
 	const { colorMode } = useColorMode();
 	const [date, setDate] = useState(new Date());
+
+	const handleHistoryClick = () => {};
 
 	return (
 		<div display={'flex'} width={'100vw'}>
@@ -61,13 +64,12 @@ const DeviceMenu = () => {
 							<Box ml={'-20px'}>
 								<DayPicker
 									styles={{
-										caption: { color: 'red' },
 										tbody: { fontSize: '10px' },
 									}}
-									mode='single'
+									mode='range'
 									selected={date}
 									onSelect={setDate}
-									footer={<p>Sa kardes</p>}
+									footer={<p></p>}
 								/>
 							</Box>
 						</Flex>

@@ -1,22 +1,33 @@
 var mosca = require('mosca');
+const express = require('express');
+const app = express();
+const redis = require('redis');
 
-var ascoltatore = {
-	type: 'redis',
-	redis: require('redis'),
-	db: 12,
-	port: 6379,
-	return_buffers: true, // to handle binary payloads
-	host: 'localhost',
+// var ascoltatore = {
+// 	type: 'redis',
+// 	redis: require('redis'),
+// 	db: 12,
+// 	port: 6379,
+// 	return_buffers: true, // to handle binary payloads
+// 	host: 'localhost',
+// };
+
+var pubsubsettings = {
+	//using ascoltatore
+	type: 'mongo',
+	url: 'mongodb://localhost:27017/mqtt',
+	pubsubCollection: 'ascoltatori',
+	mongo: {},
 };
 
 var moscaSettings = {
 	port: 1883,
-	backend: ascoltatore,
+	backend: pubsubsettings,
 	persistence: {
-		factory: mosca.persistence.Redis,
+		factory: mosca.persistence.Mongo,
 	},
 	http: {
-		port: 5000,
+		port: 5002,
 	},
 };
 
@@ -61,3 +72,22 @@ server.on('published', function (packet, client) {
 function setup() {
 	console.log('Mosca server is up and running');
 }
+
+app.get('/', async function (req, res) {
+	// const client = redis.createClient({
+	// 	socket: {
+	// 		host: '167.172.162.68',
+	// 		port: 6379,
+	// 	},
+	// 	password: 'Ugur12345.',
+	// });
+	// await client.connect();
+	// const keys = await client.sendCommand(['keys', '*']);
+	// const allData = [];
+	// keys.forEach(async (element) => {
+	// 	//const data = await client.sendCommand(['get', 'key']);
+	// 	allData.push(await client.sendCommand(['GET', `'${element}'`]));
+	// });
+	// // res.send(keys);
+});
+app.listen(5001);

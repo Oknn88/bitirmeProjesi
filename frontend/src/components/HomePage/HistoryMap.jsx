@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { DirectionsRenderer, GoogleMap, withGoogleMap } from 'react-google-maps';
+import { GoogleApiWrapper } from 'google-maps-react';
 const google = window.google;
 
 const DirectionsGoogleMap = withGoogleMap((props) => (
@@ -105,4 +106,6 @@ class Map extends Component {
 	}
 }
 
-export default Map;
+export default GoogleApiWrapper({
+	apiKey: 'AIzaSyA44GeyywkDnJl_gAQaCnxqKSeXr8T3GvI',
+})(Map);
