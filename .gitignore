@@ -4,3 +4,4 @@ userBackend/node_modules
 frontend/node_modules
 
 location-tracking/node_modules
+location-tracking/.env

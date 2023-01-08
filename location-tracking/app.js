@@ -1,7 +1,8 @@
 var mosca = require('mosca');
 const express = require('express');
 const app = express();
-const redis = require('redis');
+require('./db');
+const locData = require('./models').locData;
 
 // var ascoltatore = {
 // 	type: 'redis',
@@ -12,22 +13,11 @@ const redis = require('redis');
 // 	host: 'localhost',
 // };
 
-var pubsubsettings = {
-	//using ascoltatore
-	type: 'mongo',
-	url: 'mongodb+srv://cinoxil:Ugur12345.@cluster0.i8itvsc.mongodb.net/?retryWrites=true&w=majority',
-	pubsubCollection: 'ascoltatori',
-	mongo: {},
-};
-
 var moscaSettings = {
 	port: 1883,
-	backend: pubsubsettings,
-	persistence: {
-		factory: mosca.persistence.Mongo,
-	},
+
 	http: {
-		port: 5000,
+		port: 5002,
 	},
 };
 
@@ -39,33 +29,18 @@ server.on('clientConnected', function (client) {
 });
 
 // fired when a message is received
-server.on('published', function (packet, client) {
+server.on('published', async function (packet, client) {
 	//console.log('Published', packet.topic, packet.payload);
 
-	[flat, flon, alt, spd, crs, year, month, day, hour, minute, second] = packet.payload.toString().split(',');
-	console.log(
-		flat +
-			'-' +
-			flon +
-			'-' +
-			alt +
-			'-' +
-			spd +
-			'-' +
-			crs +
-			'-' +
-			year +
-			'-' +
-			month +
-			'-' +
-			day +
-			'-' +
-			hour +
-			'-' +
-			minute +
-			'-' +
-			second
-	);
+	[flat, flon, alt, spd, crs] = packet.payload.toString().split(',');
+
+	try {
+		var locData = new locaData();
+
+		data = await locData.create({ flat, flon, alt, spd, crs });
+	} catch (error) {
+		console.log(error);
+	}
 });
 
 // fired when the mqtt server is ready
