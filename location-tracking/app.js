@@ -15,7 +15,7 @@ const redis = require('redis');
 var pubsubsettings = {
 	//using ascoltatore
 	type: 'mongo',
-	url: 'mongodb://localhost:27017/mqtt',
+	url: 'mongodb+srv://cinoxil:Ugur12345.@cluster0.i8itvsc.mongodb.net/?retryWrites=true&w=majority',
 	pubsubCollection: 'ascoltatori',
 	mongo: {},
 };
@@ -27,7 +27,7 @@ var moscaSettings = {
 		factory: mosca.persistence.Mongo,
 	},
 	http: {
-		port: 5002,
+		port: 5000,
 	},
 };
 
