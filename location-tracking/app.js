@@ -35,7 +35,7 @@ server.on('published', async function (packet, client) {
 	[flat, flon, alt, spd, crs] = packet.payload.toString().split(',');
 
 	try {
-		var locData = new locaData();
+		var locData = new locData();
 
 		data = await locData.create({ flat, flon, alt, spd, crs });
 	} catch (error) {
