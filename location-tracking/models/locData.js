@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 			// define association here
 		}
 	}
-	User.init(
+	locData.init(
 		{
 			id: {
 				type: DataTypes.UUID,
@@ -47,6 +47,6 @@ module.exports = (sequelize, DataTypes) => {
 		}
 	);
 
-	User.associate = (models) => {};
+	locData.associate = (models) => {};
 	return locData;
 };
