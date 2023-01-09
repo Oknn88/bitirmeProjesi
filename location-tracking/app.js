@@ -1,17 +1,23 @@
 var mosca = require('mosca');
 const express = require('express');
 const app = express();
+const cors = require('cors');
 require('./db');
 const locData = require('./models').locData;
+const Sequelize = require('sequelize');
+const moment = require('moment');
+const Op = Sequelize.Op;
 
-// var ascoltatore = {
-// 	type: 'redis',
-// 	redis: require('redis'),
-// 	db: 12,
-// 	port: 6379,
-// 	return_buffers: true, // to handle binary payloads
-// 	host: 'localhost',
-// };
+app.use(
+	cors({
+		origin: '*',
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+		preflightContinue: false,
+		optionsSuccessStatus: 204,
+	})
+);
+
+app.use(express.json());
 
 var moscaSettings = {
 	port: 1883,
@@ -48,20 +54,21 @@ function setup() {
 }
 
 app.get('/', async function (req, res) {
-	// const client = redis.createClient({
-	// 	socket: {
-	// 		host: '167.172.162.68',
-	// 		port: 6379,
-	// 	},
-	// 	password: 'Ugur12345.',
-	// });
-	// await client.connect();
-	// const keys = await client.sendCommand(['keys', '*']);
-	// const allData = [];
-	// keys.forEach(async (element) => {
-	// 	//const data = await client.sendCommand(['get', 'key']);
-	// 	allData.push(await client.sendCommand(['GET', `'${element}'`]));
-	// });
-	// // res.send(keys);
+	//console.log(req.query.from);
+	const { from, to } = req.query;
+
+	const startDate = from.split('T')[0] + '"';
+	const endDate = to.split('T')[0] + '"';
+	//startDate1 = moment(new Date(from)).format('YYYY-MM-DD');
+	// endDate = moment(new Date(to)).format('YYYY-MM-DD');
+	const locs = await locData.findAll({
+		where: {
+			createdAt: {
+				[Op.between]: [startDate, endDate],
+			},
+		},
+	});
+
+	res.status(200).json({ locs });
 });
 app.listen(5001);

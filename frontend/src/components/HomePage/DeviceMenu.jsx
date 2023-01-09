@@ -15,13 +15,39 @@ import { FaHistory } from 'react-icons/fa';
 import { AiFillDelete } from 'react-icons/ai';
 import { useState } from 'react';
 import { DayPicker } from 'react-day-picker';
+import env from 'react-dotenv';
 import axios from 'axios';
 
-const DeviceMenu = () => {
+const DeviceMenu = (props) => {
 	const { colorMode } = useColorMode();
 	const [date, setDate] = useState(new Date());
 
-	const handleHistoryClick = () => {};
+	const handleHistoryClick = async () => {
+		// fetch(`http://${env.LOCATION_API_URL}`, {
+		// 	method: 'POST',
+		// 	headers: { 'Content-Type': 'application/json' },
+		// 	body: JSON.stringify(date),
+		// })
+		// 	.then((response) => {
+		// 		if (!response.ok) {
+		// 			return { hata: response.hata };
+		// 		}
+		// 		console.log(response);
+		// 	})
+		// 	.catch((err) => {
+		// 		console.log(err);
+		// 	});
+		const response = await axios.get(`http://${env.LOCATION_API_URL}`, {
+			params: {
+				from: JSON.stringify(date.from),
+				to: JSON.stringify(date.to),
+			},
+		});
+
+		const locations = response.data.locs;
+
+		props.func(locations);
+	};
 
 	return (
 		<div display={'flex'} width={'100vw'}>
@@ -76,7 +102,7 @@ const DeviceMenu = () => {
 
 						<ButtonGroup pt={2}>
 							<IconButton bg={colorMode === 'light' ? '#FF8C00' : '#FFA500'} size={'xs'}>
-								<FaHistory />
+								<FaHistory onClick={handleHistoryClick} />
 							</IconButton>
 							<IconButton bg={'#FF0000'} size={'xs'}>
 								<AiFillDelete />
