@@ -32,10 +32,11 @@ server.on('clientConnected', function (client) {
 server.on('published', async function (packet, client) {
 	//console.log('Published', packet.topic, packet.payload);
 
-	[flat, flon, alt, spd, crs] = packet.payload.toString().split(',');
+	[flat, flon, alt, spd, crs, id] = packet.payload.toString().split(',');
+	console.log(flat, flon);
 
 	try {
-		data = await locData.create({ flat: flat, flon: flon, alt: alt, spd: spd, crs: crs });
+		data = await locData.create({ flat: flat, flon: flon, alt: alt, spd: spd, crs: crs, deviceId: id });
 	} catch (error) {
 		console.log(error);
 	}
