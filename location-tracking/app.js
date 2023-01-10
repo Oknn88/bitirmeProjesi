@@ -54,19 +54,18 @@ function setup() {
 }
 
 app.get('/', async function (req, res) {
-	//console.log(req.query.from);
 	const { from, to } = req.query;
 
 	const startDate = from.split('T')[0] + '"';
 	const endDate = to.split('T')[0] + '"';
-	//startDate1 = moment(new Date(from)).format('YYYY-MM-DD');
-	// endDate = moment(new Date(to)).format('YYYY-MM-DD');
+
 	const locs = await locData.findAll({
 		where: {
 			createdAt: {
 				[Op.between]: [startDate, endDate],
 			},
 		},
+		order: [['createdAt', 'ASC']],
 	});
 
 	res.status(200).json({ locs });

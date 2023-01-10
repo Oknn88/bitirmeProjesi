@@ -5,21 +5,30 @@ import CurrentMap from './../components/HomePage/CurrentMap';
 import DeviceMenu from '../components/HomePage/DeviceMenu';
 
 const Home = () => {
-	const [locations, setLocations] = useState();
+	const [locations, setLocations] = useState(null);
 
 	const pullData = (data) => {
-		setLocations(data);
+		var locDatas = [];
+		data.forEach((element) => {
+			locDatas.push({
+				latitude: element.flat,
+				longitude: element.flon,
+			});
+		});
+
+		setLocations(locDatas);
+	};
+	const delData = () => {
+		setLocations(null);
 	};
 
 	return (
 		<div className='home'>
 			<Flex>
-				<Box flex={'1'}>
-					<CurrentMap />
-				</Box>
+				<Box flex={'1'}>{locations === null ? <CurrentMap /> : <HistoryMap data={locations} />}</Box>
 
 				<Box flex={'2'} position={'relative'}>
-					<DeviceMenu func={pullData} />
+					<DeviceMenu func={pullData} delFunc={delData} />
 				</Box>
 			</Flex>
 		</div>

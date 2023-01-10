@@ -9,7 +9,10 @@ const DirectionsGoogleMap = withGoogleMap((props) => (
 			<DirectionsRenderer
 				directions={props.directions}
 				options={{
-					suppressMarkers: true,
+					suppressMarkers: false,
+					markerOptions: {
+						icon: 'https://developers.google.com/static/maps/documentation/javascript/images/default-marker.png',
+					},
 				}}
 			/>
 		)}
@@ -20,32 +23,26 @@ const DirectionsGoogleMap = withGoogleMap((props) => (
 class Map extends Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
-			addresses: [
-				{
-					latitude: 38.639005,
-					longitude: 27.375113,
-				},
-				{
-					latitude: 38.637109,
-					longitude: 27.379345,
-				},
-				{
-					latitude: 38.635408,
-					longitude: 27.380465,
-				},
-				{
-					latitude: 38.625199,
-					longitude: 27.374366,
-				},
-				{
-					latitude: 38.623692,
-					longitude: 27.377727,
-				},
-			],
+			addresses: [],
 			directions: null,
 			prevAddresses: null,
 		};
+
+		const split = Math.ceil(props.data.length / 23);
+		const fixedLocs = [];
+		console.log(split);
+		fixedLocs.push(props.data[0]);
+		for (let index = split; index < props.data.length; index = index + split) {
+			fixedLocs.push(props.data[index]);
+		}
+		fixedLocs.push(props.data[props.data.length - 1]);
+
+		console.log(fixedLocs);
+		fixedLocs.forEach((element) => {
+			this.state.addresses.push(element);
+		});
 	}
 
 	componentDidMount() {

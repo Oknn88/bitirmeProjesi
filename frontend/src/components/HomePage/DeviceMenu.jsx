@@ -12,6 +12,7 @@ import {
 	Flex,
 } from '@chakra-ui/react';
 import { FaHistory } from 'react-icons/fa';
+import { BiCurrentLocation } from 'react-icons/bi';
 import { AiFillDelete } from 'react-icons/ai';
 import { useState } from 'react';
 import { DayPicker } from 'react-day-picker';
@@ -23,20 +24,6 @@ const DeviceMenu = (props) => {
 	const [date, setDate] = useState(new Date());
 
 	const handleHistoryClick = async () => {
-		// fetch(`http://${env.LOCATION_API_URL}`, {
-		// 	method: 'POST',
-		// 	headers: { 'Content-Type': 'application/json' },
-		// 	body: JSON.stringify(date),
-		// })
-		// 	.then((response) => {
-		// 		if (!response.ok) {
-		// 			return { hata: response.hata };
-		// 		}
-		// 		console.log(response);
-		// 	})
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 	});
 		const response = await axios.get(`http://${env.LOCATION_API_URL}`, {
 			params: {
 				from: JSON.stringify(date.from),
@@ -47,6 +34,10 @@ const DeviceMenu = (props) => {
 		const locations = response.data.locs;
 
 		props.func(locations);
+	};
+
+	const handleCurrentLocationClick = () => {
+		props.delFunc();
 	};
 
 	return (
@@ -101,6 +92,9 @@ const DeviceMenu = (props) => {
 						</Flex>
 
 						<ButtonGroup pt={2}>
+							<IconButton bg={colorMode === 'light' ? '#49be25' : '#49be25'} size={'xs'}>
+								<BiCurrentLocation onClick={handleCurrentLocationClick} />
+							</IconButton>
 							<IconButton bg={colorMode === 'light' ? '#FF8C00' : '#FFA500'} size={'xs'}>
 								<FaHistory onClick={handleHistoryClick} />
 							</IconButton>
