@@ -65,7 +65,8 @@
 	"react-dotenv": {
 		"whitelist": [
 			"API_URL",
-			"LOCATION_API_URL"
+			"LOCATION_API_URL",
+            "MAIL_SERVICE_URL"
 		]
 	}
 }

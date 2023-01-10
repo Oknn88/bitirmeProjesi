@@ -32,14 +32,14 @@ const Contact = () => {
 	});
 
 	const formik = useFormik({
-		initialValues: { firstName: '', lastName: '',  email: '', country: '', subject: '', message: '' },
+		initialValues: { firstName: '', lastName: '', email: '', country: '', subject: '', message: '' },
 		validationSchema: Yup.object({
 			firstName: Yup.string().required('Name required!').min(3, 'Name too short!').max(28, 'Name too long!'),
 			lastName: Yup.string()
 				.required('Surname required!')
 				.min(3, 'Surname too short!')
 				.max(28, 'Surname too long!'),
-				email: Yup.string()
+			email: Yup.string()
 				.required('Email required!')
 				.min(6, 'Email too short!')
 				.max(28, 'Email too long!')
@@ -57,8 +57,8 @@ const Contact = () => {
 		onSubmit: async (values, actions) => {
 			const { hata, okey } = await contact(values);
 
-			if(hata){
-				alert("Email cannot send");
+			if (hata) {
+				alert('Email cannot send');
 			}
 			actions.resetForm();
 		},
@@ -66,7 +66,16 @@ const Contact = () => {
 
 	return (
 		<div>
-			<VStack as={'form'} w={{ base: '100%' }} m='auto' justify={'center'} spacing={'1rem'} pl={'1rem'} pr={'1rem'} onSubmit={formik.handleSubmit}>
+			<VStack
+				as={'form'}
+				w={{ base: '100%' }}
+				m='auto'
+				justify={'center'}
+				spacing={'1rem'}
+				pl={'1rem'}
+				pr={'1rem'}
+				onSubmit={formik.handleSubmit}
+			>
 				<Stack spacing={3} justifyContent={'center'} alignContent={'center'}>
 					<Text fontSize='5xl' as='b' textAlign={'center'}>
 						Contact Us
@@ -102,10 +111,14 @@ const Contact = () => {
 
 						<FormControl isInvalid={formik.errors.email && formik.touched.email}>
 							<FormLabel fontSize={'lg'}>Email</FormLabel>
-							<Input name='email' placeholder='Enter Email' size={'lg'} {...formik.getFieldProps('email')} />
+							<Input
+								name='email'
+								placeholder='Enter Email'
+								size={'lg'}
+								{...formik.getFieldProps('email')}
+							/>
 							<FormErrorMessage>{formik.errors.email}</FormErrorMessage>
 						</FormControl>
-
 
 						<FormControl isInvalid={formik.errors.country && formik.touched.country}>
 							<FormLabel fontSize={'lg'}>Country</FormLabel>
@@ -141,15 +154,13 @@ const Contact = () => {
 							></Textarea>
 							<FormErrorMessage>{formik.errors.message}</FormErrorMessage>
 						</FormControl>
-
-						
 					</Stack>
 				</SimpleGrid>
 				<ButtonGroup pt={'1rem'}>
-							<Button type='submit' colorScheme={'teal'}>
-								Submit
-							</Button>
-						</ButtonGroup>
+					<Button type='submit' colorScheme={'teal'}>
+						Submit
+					</Button>
+				</ButtonGroup>
 			</VStack>
 		</div>
 	);
