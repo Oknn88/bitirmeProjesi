@@ -1,7 +1,7 @@
 import env from 'react-dotenv';
 export const useContact = () => {
 	const contact = async (vals) => {
-		const response = await fetch(`http://${env.MAIL_SERVICE_URL}/contact"`, {
+		const response = await fetch(`http://${env.MAIL_SERVICE_URL}/contact`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ ...vals }),
