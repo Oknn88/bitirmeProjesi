@@ -20,19 +20,13 @@ import { AiOutlineInstagram, AiOutlineLinkedin } from 'react-icons/ai';
 const AboutUs = () => {
 	return (
 		<div>
-			<VStack w={{ base: '100%' }} m='auto' justify={'center'}>
-				<Box spacing={3} justifyContent={'center'} alignContent={'center'}>
-					<Text fontSize='5xl' as='b' textAlign={'center'}>
-						Who We Are
-					</Text>
-					<Text fontSize='xl'>Sa Kardesim </Text>
-				</Box>
-
+			<VStack w={{ base: '90%' }} m='auto' justify={'center'}>
 				<Box spacing={3} justifyContent={'center'} alignContent={'center'}>
 					<Text fontSize='5xl' as='b' textAlign={'center'}>
 						Meet Our Team
 					</Text>
 				</Box>
+
 				<Box>
 					<SimpleGrid gap={4} columns={[1, 2, 3]}>
 						{/* columns={[1, 2, 3] en kucuk boyutlu ekran icin 1, orta ekran icin 2, buyuk ekran icin 3 column yapiyor responsive */}
@@ -40,9 +34,11 @@ const AboutUs = () => {
 							<Card>
 								<CardBody>
 									<Image
-										src='https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80'
+										src='https://media.licdn.com/dms/image/D4D03AQFbMsj6YOyRMA/profile-displayphoto-shrink_800_800/0/1672406509414?e=1678924800&v=beta&t=ejgZ54405xG4O3XDxydzQOt1IOOZ4kJ-J7t6ETmvTnI'
 										alt='Green double couch with wooden legs'
 										borderRadius='lg'
+										htmlWidth={'100%'}
+										htmlHeight={'100%'}
 									/>
 									<Stack mt='6' spacing='3'>
 										<Heading size='md'>Cüneyt Uğur Öngün</Heading>
@@ -77,9 +73,11 @@ const AboutUs = () => {
 							<Card>
 								<CardBody>
 									<Image
-										src='https://media.licdn.com/dms/image/D4D03AQHgfpmwOPUpvw/profile-displayphoto-shrink_400_400/0/1671710896014?e=1677110400&v=beta&t=hg756tJb5c_hVhhx29oJJ0keKuTz_G662ieRiS1T9WM'
+										src='https://media.licdn.com/dms/image/D4D03AQHcGXGrK03H8A/profile-displayphoto-shrink_800_800/0/1672413215426?e=1678924800&v=beta&t=qz9AUKXnew0L-oDFQMD1HRYyJy__afkLXlp__C3lpgQ'
 										alt='Green double couch with wooden legs'
 										borderRadius='lg'
+										htmlWidth={'100%'}
+										htmlHeight={'100%'}
 									/>
 									<Stack mt='6' spacing='3'>
 										<Heading size='md'>Okan Erciyas</Heading>
@@ -92,7 +90,11 @@ const AboutUs = () => {
 								</CardBody>
 								<CardFooter>
 									<ButtonGroup>
-										<a href='https://www.instagram.com/erciyas.okan/' target='_blank' rel='noreferrer'>
+										<a
+											href='https://www.instagram.com/erciyas.okan/'
+											target='_blank'
+											rel='noreferrer'
+										>
 											<IconButton bgColor={'transparent'}>
 												<AiOutlineInstagram size={'40px'} />
 											</IconButton>
@@ -117,6 +119,8 @@ const AboutUs = () => {
 										src='https://media.licdn.com/dms/image/D4D03AQEd1bsAbK1EtQ/profile-displayphoto-shrink_400_400/0/1669763327141?e=1677110400&v=beta&t=Z-D2ZxPS4cOMVt2BIKY8xkTGcPo93fM_BM1PVCzh3f4'
 										alt='Green double couch with wooden legs'
 										borderRadius='lg'
+										htmlWidth={'100%'}
+										htmlHeight={'100%'}
 									/>
 									<Stack mt='6' spacing='3'>
 										<Heading size='md'>Cüneyt Uğur Öngün</Heading>

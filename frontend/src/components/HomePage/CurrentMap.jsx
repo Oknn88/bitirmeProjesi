@@ -5,8 +5,8 @@ import mqtt from 'mqtt/dist/mqtt';
 
 export class MapContainer extends React.Component {
 	state = {
-		lat: -34.397,
-		lng: 150.644,
+		lat: 38.491455,
+		lng: 27.70763,
 		altitude: 0,
 		speed: 0,
 		course: 0,
