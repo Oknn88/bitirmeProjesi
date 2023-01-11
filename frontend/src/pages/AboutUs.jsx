@@ -123,7 +123,7 @@ const AboutUs = () => {
 										htmlHeight={'100%'}
 									/>
 									<Stack mt='6' spacing='3'>
-										<Heading size='md'>Cüneyt Uğur Öngün</Heading>
+										<Heading size='md'>Kadir Can Tüfekci</Heading>
 										<Heading color='gray' size='sm'>
 											CEO & Founder
 										</Heading>
