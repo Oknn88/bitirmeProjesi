@@ -13,9 +13,6 @@
   <p align="center">
     Vehicle Tracking Application
     <br />
-    <a href="https://github.com/cinoxil/bitirmeProjesi"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
     <a href="https://github.com/cinoxil/bitirmeProjesi">View Demo</a>
     ·
     <a href="https://github.com/cinoxil/bitirmeProjesi/issues">Report Bug</a>
